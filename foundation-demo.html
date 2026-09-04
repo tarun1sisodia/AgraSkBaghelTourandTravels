@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08111f">
+  <meta name="description" content="Agra SK Baghel Tour and Travels design system foundation demo: refined taxi journeys across North India.">
+  <title>Foundation Demo | Agra SK Baghel Tour and Travels</title>
+  <style>
+    /* ======================================================================
+       DESIGN TOKENS
+       These are the first-pass values that will move to css/tokens.css.
+       ====================================================================== */
+    :root {
+      color-scheme: dark;
+      --color-ink: #f7f3ea;
+      --color-ink-muted: #aab5c4;
+      --color-ink-subtle: #718095;
+      --color-navy-950: #050b14;
+      --color-navy-900: #08111f;
+      --color-navy-850: #0d192a;
+      --color-navy-800: #122239;
+      --color-navy-700: #1b3150;
+      --color-gold-300: #f6da8b;
+      --color-gold-400: #eac365;
+      --color-gold-500: #d9a941;
+      --color-gold-600: #b98524;
+      --color-line: rgba(234, 195, 101, .20);
+      --color-line-soft: rgba(255, 255, 255, .10);
+      --color-success: #8dd8b0;
+
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-body: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --text-xs: .75rem;
+      --text-sm: .875rem;
+      --text-md: 1rem;
+      --text-lg: clamp(1.125rem, 1.8vw, 1.35rem);
+      --text-xl: clamp(1.75rem, 4vw, 3rem);
+      --text-hero: clamp(3.25rem, 9vw, 7.75rem);
+
+      --space-1: .25rem;
+      --space-2: .5rem;
+      --space-3: .75rem;
+      --space-4: 1rem;
+      --space-5: 1.5rem;
+      --space-6: 2rem;
+      --space-7: 3rem;
+      --space-8: 4rem;
+      --space-9: 6rem;
+      --space-10: 8rem;
+      --radius-sm: .65rem;
+      --radius-md: 1rem;
+      --radius-lg: 1.5rem;
+      --radius-pill: 999px;
+      --shadow-card: 0 1.5rem 4rem rgba(0, 0, 0, .24);
+
+      --ease-out: cubic-bezier(.16, 1, .3, 1);
+      --ease-standard: cubic-bezier(.2, .8, .2, 1);
+      --duration-fast: 180ms;
+      --duration-base: 650ms;
+      --duration-slow: 950ms;
+      --container: 76rem;
+    }
+
+    /* ======================================================================
+       BASE + LAYOUT
+       ====================================================================== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-width: 320px;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--color-ink);
+      background: var(--color-navy-950);
+      font-family: var(--font-body);
+      font-size: var(--text-md);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { color: inherit; font: inherit; }
+    :focus-visible {
+      outline: 2px solid var(--color-gold-300);
+      outline-offset: 4px;
+    }
+    ::selection { color: var(--color-navy-950); background: var(--color-gold-300); }
+    .container { width: min(calc(100% - 3rem), var(--container)); margin-inline: auto; }
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      margin: 0 0 var(--space-4);
+      color: var(--color-gold-300);
+      font-size: var(--text-xs);
+      font-weight: 750;
+      letter-spacing: .18em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .eyebrow::before {
+      width: 2.2rem;
+      height: 1px;
+      content: '';
+      background: var(--color-gold-500);
+    }
+    .display {
+      max-width: 12ch;
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: var(--text-hero);
+      font-weight: 400;
+      letter-spacing: -.065em;
+      line-height: .96;
+    }
+    .muted { color: var(--color-ink-muted); }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 3rem;
+      padding: .75rem 1.25rem;
+      border: 1px solid transparent;
+      border-radius: var(--radius-pill);
+      font-size: var(--text-sm);
+      font-weight: 750;
+      text-decoration: none;
+      transition: transform var(--duration-fast) var(--ease-out), background var(--duration-fast) ease, border-color var(--duration-fast) ease;
+    }
+    .button:hover { transform: translateY(-2px); }
+    .button-primary { color: var(--color-navy-950); background: var(--color-gold-400); }
+    .button-primary:hover { background: var(--color-gold-300); }
+    .button-quiet { border-color: var(--color-line); color: var(--color-ink); background: rgba(255,255,255,.035); }
+    .button-quiet:hover { border-color: var(--color-gold-500); background: rgba(234,195,101,.08); }
+
+    /* ======================================================================
+       GLOBAL SHELL
+       ====================================================================== */
+    .site-header {
+      position: absolute;
+      z-index: 5;
+      top: 0;
+      right: 0;
+      left: 0;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(to bottom, rgba(5,11,20,.75), transparent);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 5.5rem;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: .75rem;
+      color: var(--color-ink);
+      font-size: .8rem;
+      font-weight: 800;
+      letter-spacing: .09em;
+      line-height: 1.15;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .brand-mark {
+      display: grid;
+      width: 2.2rem;
+      height: 2.2rem;
+      place-items: center;
+      border: 1px solid var(--color-gold-400);
+      border-radius: 50%;
+      color: var(--color-gold-300);
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    .nav-links { display: flex; align-items: center; gap: 1.75rem; }
+    .nav-link {
+      position: relative;
+      padding-block: .5rem;
+      color: var(--color-ink-muted);
+      font-size: var(--text-sm);
+      text-decoration: none;
+    }
+    /* Hover Highlight: the moving gold line uses only a pseudo-element. */
+    .nav-link::after {
+      position: absolute;
+      right: 0;
+      bottom: .15rem;
+      left: 0;
+      height: 1px;
+      content: '';
+      background: var(--color-gold-400);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform var(--duration-base) var(--ease-out);
+    }
+    .nav-link:hover, .nav-link[aria-current="page"] { color: var(--color-ink); }
+    .nav-link:hover::after, .nav-link[aria-current="page"]::after { transform: scaleX(1); transform-origin: left; }
+
+    /* ======================================================================
+       HERO / TEXT REVEAL
+       ====================================================================== */
+    .hero {
+      position: relative;
+      isolation: isolate;
+      min-height: min(52rem, 94vh);
+      padding: 11.5rem 0 7rem;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 74% 31%, rgba(217,169,65,.14), transparent 23rem),
+        linear-gradient(115deg, var(--color-navy-950) 0%, var(--color-navy-900) 55%, #101f35 100%);
+    }
+    .hero::before {
+      position: absolute;
+      z-index: -1;
+      top: 12%;
+      right: -18rem;
+      width: 52rem;
+      height: 52rem;
+      border: 1px solid rgba(234,195,101,.12);
+      border-radius: 50%;
+      content: '';
+      box-shadow: 0 0 0 4rem rgba(234,195,101,.02), 0 0 0 8rem rgba(234,195,101,.015);
+    }
+    .hero::after {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      content: '';
+      opacity: .28;
+      background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-position: center;
+      background-size: 4rem 4rem;
+      mask-image: linear-gradient(to right, black, transparent 70%);
+    }
+    .hero-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(18rem, .9fr); align-items: end; gap: var(--space-8); }
+    .hero-copy { max-width: 54rem; }
+    .hero-copy .eyebrow { margin-bottom: var(--space-5); }
+    .hero h1 { max-width: 9ch; }
+    .hero h1 .word {
+      display: inline-block;
+      margin-right: .18em;
+      opacity: 0;
+      transform: translateY(1.1em);
+      transition: opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+      transition-delay: calc(var(--word-index) * 90ms);
+    }
+    .is-visible h1 .word, h1.is-visible .word { opacity: 1; transform: translateY(0); }
+    .hero-intro { max-width: 34rem; margin: var(--space-6) 0 0; color: var(--color-ink-muted); font-size: var(--text-lg); }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: var(--space-7); }
+    .hero-note { display: flex; align-items: center; gap: .5rem; margin-top: var(--space-5); color: var(--color-ink-subtle); font-size: var(--text-xs); }
+    .status-dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--color-success); box-shadow: 0 0 0 .25rem rgba(141,216,176,.1); }
+
+    /* ======================================================================
+       BLUR IN + SPOTLIGHT CARD
+       ====================================================================== */
+    .demo-section { padding: var(--space-10) 0; background: var(--color-navy-900); }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: var(--space-7); }
+    .section-heading h2 { max-width: 14ch; margin: 0; font-family: var(--font-display); font-size: var(--text-xl); font-weight: 400; letter-spacing: -.04em; line-height: 1.05; }
+    .section-heading p { max-width: 29rem; margin: 0; color: var(--color-ink-muted); }
+    [data-animate="blur"] { opacity: 0; filter: blur(14px); transform: translateY(1rem); transition: opacity var(--duration-slow) var(--ease-out), filter var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out); }
+    [data-animate="blur"].is-visible { opacity: 1; filter: blur(0); transform: translateY(0); }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid var(--color-line-soft); background: var(--color-line-soft); }
+    .spotlight-card {
+      --spot-x: 50%;
+      --spot-y: 50%;
+      position: relative;
+      min-height: 19rem;
+      padding: var(--space-6);
+      overflow: hidden;
+      background: var(--color-navy-850);
+    }
+    .spotlight-card::before {
+      position: absolute;
+      inset: 0;
+      content: '';
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(28rem circle at var(--spot-x) var(--spot-y), rgba(234,195,101,.16), transparent 42%);
+      transition: opacity var(--duration-base) ease;
+    }
+    .spotlight-card:hover::before, .spotlight-card:focus-within::before { opacity: 1; }
+    .card-index { position: relative; color: var(--color-gold-400); font-size: var(--text-xs); font-weight: 800; letter-spacing: .12em; }
+    .spotlight-card h3 { position: relative; margin: 4rem 0 .75rem; font-family: var(--font-display); font-size: 1.8rem; font-weight: 400; letter-spacing: -.035em; }
+    .spotlight-card p { position: relative; max-width: 24rem; margin: 0; color: var(--color-ink-muted); }
+    .card-arrow { position: absolute; right: var(--space-6); bottom: var(--space-6); color: var(--color-gold-300); font-size: 1.4rem; transition: transform var(--duration-fast) var(--ease-out); }
+    .spotlight-card:hover .card-arrow { transform: translate(3px, -3px); }
+
+    /* A small shared highlight treatment for feature rows. */
+    .feature-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: var(--space-8) 0 0; padding: 0; list-style: none; }
+    .feature-list li { padding: 1.25rem 1.4rem; border-top: 1px solid var(--color-line); color: var(--color-ink-muted); font-size: var(--text-sm); }
+    .feature-list strong { display: block; margin-bottom: .25rem; color: var(--color-ink); font-family: var(--font-display); font-size: 1.25rem; font-weight: 400; }
+
+    /* ======================================================================
+       INFINITE MARQUEE
+       ====================================================================== */
+    .marquee-section { padding: 0 0 var(--space-10); overflow: hidden; background: var(--color-navy-900); }
+    .marquee {
+      display: flex;
+      width: max-content;
+      border-block: 1px solid var(--color-line-soft);
+      color: var(--color-gold-300);
+      transform: translateX(-1px);
+      animation: scroll-marquee 28s linear infinite;
+    }
+    .marquee:hover { animation-play-state: paused; }
+    .marquee-group { display: flex; align-items: center; flex-shrink: 0; }
+    .marquee-item { display: inline-flex; align-items: center; gap: 2rem; padding: 1.2rem 2rem; font-family: var(--font-display); font-size: clamp(1.2rem, 2vw, 1.65rem); white-space: nowrap; }
+    .marquee-item::after { width: .4rem; height: .4rem; border-radius: 50%; content: ''; background: var(--color-gold-500); }
+    @keyframes scroll-marquee { to { transform: translateX(-50%); } }
+
+    /* ======================================================================
+       DEMO FOOTER
+       ====================================================================== */
+    .demo-footer { padding: var(--space-7) 0; border-top: 1px solid var(--color-line-soft); background: var(--color-navy-950); }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+    .footer-row p { margin: 0; color: var(--color-ink-subtle); font-size: var(--text-sm); }
+    .token-chip { display: inline-flex; align-items: center; gap: .5rem; padding: .4rem .7rem; border: 1px solid var(--color-line); border-radius: var(--radius-pill); color: var(--color-gold-300); font-size: var(--text-xs); font-weight: 700; }
+    .token-chip::before { width: .45rem; height: .45rem; border-radius: 50%; content: ''; background: var(--color-success); }
+
+    @media (max-width: 760px) {
+      .container { width: min(calc(100% - 2rem), var(--container)); }
+      .nav { min-height: 4.75rem; }
+      .nav-links { display: none; }
+      .hero { min-height: auto; padding: 9rem 0 5rem; }
+      .hero-grid { display: block; }
+      .hero h1 { max-width: 10ch; }
+      .hero::before { top: 30%; right: -24rem; }
+      .section-heading, .footer-row { display: block; }
+      .section-heading p { margin-top: 1rem; }
+      .cards, .feature-list { grid-template-columns: 1fr; }
+      .spotlight-card { min-height: 15rem; }
+      .spotlight-card h3 { margin-top: 2.5rem; }
+      .footer-row .token-chip { display: inline-flex; margin-top: 1rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      [data-animate], h1 .word { opacity: 1 !important; filter: none !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#top" aria-label="Agra SK Baghel Tour and Travels home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+        <span>Agra SK Baghel<br>Tour &amp; Travels</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#journeys" aria-current="page">Journeys</a>
+        <a class="nav-link" href="#promise">Our promise</a>
+        <a class="nav-link" href="#contact">Contact</a>
+      </div>
+      <a class="button button-primary" href="#contact">Plan a ride</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow" data-animate="blur">Thoughtful journeys, beautifully driven</p>
+          <h1 class="display" id="hero-title" data-split>Travel further. Arrive <em>better.</em></h1>
+          <p class="hero-intro" data-animate="blur">Reliable cars, local knowledge, and a calm start to every journey from Agra to the places worth remembering.</p>
+          <div class="hero-actions" data-animate="blur">
+            <a class="button button-primary" href="#journeys">Explore journeys <span aria-hidden="true">&nbsp;↗</span></a>
+            <a class="button button-quiet" href="#promise">Why travel with us</a>
+          </div>
+          <p class="hero-note" data-animate="blur"><span class="status-dot" aria-hidden="true"></span> Available for airport transfers and outstation travel</p>
+        </div>
+        <div aria-label="Service highlights" class="hero-aside" data-animate="blur">
+          <ul class="feature-list">
+            <li><strong>24/7</strong>Easy booking support</li>
+            <li><strong>10+</strong>Years on the road</li>
+            <li><strong>4.9/5</strong>Guest experience</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="demo-section" id="journeys" aria-labelledby="journeys-title">
+      <div class="container">
+        <div class="section-heading" data-animate="blur">
+          <div>
+            <p class="eyebrow">Spotlight cards</p>
+            <h2 id="journeys-title">A better way to see North India.</h2>
+          </div>
+          <p>Move your pointer across a card to see the spotlight follow it. This interaction will become the reusable route and fleet card pattern.</p>
+        </div>
+        <div class="cards">
+          <article class="spotlight-card" data-spotlight data-animate="blur" style="--stagger: 0ms">
+            <span class="card-index">01 / ROUTES</span>
+            <h3>Agra to Delhi</h3>
+            <p>Door-to-door comfort for business, family, or a flight to catch.</p>
+            <a class="card-arrow" href="#contact" aria-label="Book an Agra to Delhi journey">↗</a>
+          </article>
+          <article class="spotlight-card" data-spotlight data-animate="blur" style="--stagger: 120ms">
+            <span class="card-index">02 / EXPERIENCES</span>
+            <h3>Golden Triangle</h3>
+            <p>Take in Agra, Jaipur, and Delhi at your own pace, with a local guide in the driver's seat.</p>
+            <a class="card-arrow" href="#contact" aria-label="Plan a Golden Triangle journey">↗</a>
+          </article>
+          <article class="spotlight-card" data-spotlight data-animate="blur" style="--stagger: 240ms">
+            <span class="card-index">03 / FLEET</span>
+            <h3>Made for the road</h3>
+            <p>Choose a comfortable sedan, spacious Innova, or a tempo for the whole group.</p>
+            <a class="card-arrow" href="#contact" aria-label="Explore vehicles">↗</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="marquee-section" id="promise" aria-labelledby="promise-title">
+      <h2 id="promise-title" class="sr-only">Our promise</h2>
+      <div class="marquee" data-marquee aria-label="Comfort, clarity, local care, on-time travel">
+        <div class="marquee-group" aria-hidden="true">
+          <span class="marquee-item">Comfort, always</span>
+          <span class="marquee-item">Clarity, upfront</span>
+          <span class="marquee-item">Local care</span>
+          <span class="marquee-item">On-time travel</span>
+        </div>
+        <div class="marquee-group" aria-hidden="true">
+          <span class="marquee-item">Comfort, always</span>
+          <span class="marquee-item">Clarity, upfront</span>
+          <span class="marquee-item">Local care</span>
+          <span class="marquee-item">On-time travel</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="demo-footer" id="contact">
+    <div class="container footer-row">
+      <p>Foundation demo · Dark navy + golden design system · No external dependencies</p>
+      <span class="token-chip">Motion engine ready</span>
+    </div>
+  </footer>
+
+  <style>
+    /* Screen-reader-only utility kept close to the demo markup. */
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  </style>
+
+  <script>
+    /* ======================================================================
+       MOTION ENGINE
+       This is the first-pass implementation that will move to js/motion.js.
+       One observer powers all entrance animations; components opt in with
+       data-animate rather than shipping their own scroll listeners.
+       ====================================================================== */
+    (() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Split a heading into words so each word can reveal on its own beat.
+      const splitText = (element) => {
+        const text = element.textContent.trim();
+        element.setAttribute('aria-label', text);
+        element.setAttribute('aria-hidden', 'true');
+        element.innerHTML = text.split(/(\s+)/).map((part, index) => {
+          if (/\s+/.test(part)) return part;
+          return `<span class="word" style="--word-index: ${index}">${part}</span>`;
+        }).join('');
+      };
+
+      document.querySelectorAll('[data-split]').forEach(splitText);
+
+      const reveal = (element) => {
+        element.classList.add('is-visible');
+        if (element.matches('[data-split]')) element.removeAttribute('aria-hidden');
+      };
+
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        document.querySelectorAll('[data-animate], [data-split]').forEach(reveal);
+      } else {
+        const observer = new IntersectionObserver((entries, observerInstance) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const element = entry.target;
+            const delay = element.style.getPropertyValue('--stagger') || '0ms';
+            element.style.transitionDelay = delay;
+            reveal(element);
+            observerInstance.unobserve(element);
+          });
+        }, { rootMargin: '0px 0px -9% 0px', threshold: .12 });
+
+        document.querySelectorAll('[data-animate], [data-split]').forEach((element) => observer.observe(element));
+      }
+
+      // Pointer-following spotlight. It is deliberately disabled for coarse
+      // pointers: touch users get the card's focus/hover fallback instead.
+      if (window.matchMedia('(pointer: fine)').matches) {
+        document.querySelectorAll('[data-spotlight]').forEach((card) => {
+          card.addEventListener('pointermove', (event) => {
+            const bounds = card.getBoundingClientRect();
+            card.style.setProperty('--spot-x', `${event.clientX - bounds.left}px`);
+            card.style.setProperty('--spot-y', `${event.clientY - bounds.top}px`);
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
